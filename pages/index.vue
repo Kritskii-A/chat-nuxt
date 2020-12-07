@@ -39,6 +39,9 @@
 import { mapMutations } from "vuex";
 export default {
   layout: "empty",
+  head: {
+    title: "Добро пожаловать в чат | KRITSKII"
+  },
   sockets: {
     connect: function() {
       console.log("socket connected");
