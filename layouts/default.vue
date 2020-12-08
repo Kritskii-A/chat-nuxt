@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex"; // импортируем, чтобы могли получить данные в user.room
+import { mapState, mapMutations } from "vuex"; // импортируем, чтобы могли получить данные в user.room
 export default {
   data: () => ({
     drawer: true,
@@ -39,7 +39,11 @@ export default {
   }),
   computed: mapState(["user"]), // подключаем, чтобы могли получить данные в user.room
   methods: {
-    exit() {}
+    ...mapMutations(["clearData"]),
+    exit() {
+      this.$router.push("/?message=leftChat");
+      this.clearData();
+    }
   }
 };
 </script>
