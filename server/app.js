@@ -26,6 +26,8 @@ io.on("connection", socket => {
     });
     // если все ок, то возвращаем объект данных
     cb({ userId: socket.id });
+    // обновляем список пользователей
+    io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
     // отправка сообщения пользователю при входе в комнату
     socket.emit("newMessage", m("Admin", `Добро пожаловать, ${data.name}`));
 
@@ -47,6 +49,36 @@ io.on("connection", socket => {
       io.to(user.room).emit("newMessage", m(user.name, data.text, data.id));
     }
     cb();
+  });
+
+  // пользователь вышел из чата
+  socket.on("userLeft", (id, cb) => {
+    const user = users.remove(id);
+    if (user) {
+      // обновляем список пользователей
+      io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
+      // отправляем сообщение в комнату
+      io.to(user.room).emit(
+        "newMessage",
+        m("Admin", `Пользователь ${user.name} покинул чат.`)
+      );
+    }
+    cb();
+  });
+
+  //пользователь закрыл вкладку
+  socket.on("disconnect", () => {
+    const user = users.remove(socket.id);
+
+    if (user) {
+      // обновляем список пользователей
+      io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
+      // отправляем сообщение в комнату
+      io.to(user.room).emit(
+        "newMessage",
+        m("Admin", `Пользователь ${user.name} покинул чат.`)
+      );
+    }
   });
 });
 
