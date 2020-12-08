@@ -67,8 +67,16 @@ export default {
           room: this.room
         };
 
-        this.setUser(user);
-        this.$router.push("/chat");
+        // получаем уникальный id пользователя
+        this.$socket.emit("userJoined", user, data => {
+          if (typeof data === "string") {
+            console.log(data);
+          } else {
+            user.id = data.userId; // задаем пользователю user ID
+            this.setUser(user);
+            this.$router.push("/chat");
+          }
+        });
       }
     }
   }

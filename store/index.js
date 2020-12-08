@@ -10,11 +10,9 @@ export const mutations = {
   clearData(state) {
     state.user = {}; // очищаем даннные пользователя
     state.messages = []; // очищаем сообщения
-  }
-};
-
-export const actions = {
-  SOCKET_newMessage(ctx, data) {
-    console.log("Message received", data);
+  },
+  // ниже вся логика по приему новых сообщений во frontend
+  SOCKET_newMessage(state, message) {
+    state.messages.push(message);
   }
 };
