@@ -31,7 +31,9 @@ export default {
   watch: {
     messages() {
       setTimeout(() => {
-        this.$refs.block.scrollTop = this.$refs.block.scrollHeight;
+        if (undefined !== this.$refs.block) {
+          this.$refs.block.scrollTop = this.$refs.block.scrollHeight;
+        }
       });
     }
   }
