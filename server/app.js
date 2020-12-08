@@ -27,7 +27,7 @@ io.on("connection", socket => {
     // если все ок, то возвращаем объект данных
     cb({ userId: socket.id });
     // обновляем список пользователей
-    io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
+    io.to(data.room).emit("updateUsers", users.getByRoom(data.room));
     // отправка сообщения пользователю при входе в комнату
     socket.emit("newMessage", m("Admin", `Добро пожаловать, ${data.name}`));
 
