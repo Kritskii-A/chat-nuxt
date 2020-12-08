@@ -2,6 +2,12 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
       <v-card min-width="40vw">
+        <v-snackbar v-model="snackbar" :timeout="6000" top>
+          {{ message }}
+          <v-btn color="pink" flat @click="snackbar = false">
+            Закрыть
+          </v-btn>
+        </v-snackbar>
         <v-card-title><h1>Чат</h1></v-card-title>
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -50,6 +56,8 @@ export default {
   data: () => ({
     valid: true,
     name: "",
+    mesage: "",
+    snackbar: false,
     nameRules: [
       v => !!v || "Введите имя",
       v => (v && v.length <= 16) || "Имя не должно превышать 16 символов"
@@ -57,7 +65,17 @@ export default {
     room: "",
     roomRules: [v => !!v || "Введите комнату"]
   }),
+  mounted() {
+    const { message } = this.$route.query;
 
+    if (message === "noUser") {
+      this.message = "Введите данные";
+    } else if (message === "leftChat") {
+      this.message = "Вы вышли из чата";
+    }
+
+    this.snackbar = !!this.message; // приведение к boolean типу
+  },
   methods: {
     ...mapMutations(["setUser"]),
     submit() {
