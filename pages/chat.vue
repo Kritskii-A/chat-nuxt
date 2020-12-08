@@ -1,11 +1,13 @@
 <template>
   <div class="c-wrap">
     <div class="c-chat">
-      <ul>
-        <li v-for="m in messages" :key="m.text">
-          {{ m.text }}
-        </li>
-      </ul>
+      <Message
+        v-for="m in messages"
+        :key="m.text"
+        :name="m.name"
+        :text="m.text"
+        owner
+      />
     </div>
     <div class="c-form"></div>
   </div>
@@ -13,6 +15,7 @@
 
 <script>
 import { mapState } from "vuex";
+import Message from "@/components/Message";
 export default {
   middleware: ["chat"],
   head() {
@@ -20,6 +23,7 @@ export default {
       title: `Комната - ${this.user.room}`
     };
   },
+  components: { Message },
   computed: mapState(["user", "messages"])
 };
 </script>
