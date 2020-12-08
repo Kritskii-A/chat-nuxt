@@ -1,5 +1,6 @@
 export const state = () => ({
-  user: {}
+  user: {},
+  messages: []
 });
 
 export const mutations = {
@@ -7,7 +8,8 @@ export const mutations = {
     state.user = user;
   },
   clearData(state) {
-    state.user = {};
+    state.user = {}; // очищаем даннные пользователя
+    state.messages = []; // очищаем сообщения
   }
 };
 
