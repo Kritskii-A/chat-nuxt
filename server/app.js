@@ -14,10 +14,17 @@ io.on("connection", socket => {
       return cb("Данные некорректны");
     }
 
+    socket.join(data.room);
     // если все ок, то возвращаем объект данных
     cb({ userId: socket.id });
     // отправка сообщения пользователю при входе в комнату
     socket.emit("newMessage", m("Admin", `Добро пожаловать, ${data.name}`));
+    socket.broadcast
+      .to(data.room) // вычеркиваем текущего пользователя и говорим в какую комнату нужно отправить сообщение
+      .emit(
+        "newMessage",
+        m("Admin", `Пользователь ${data.name} вошел в комнату.`)
+      );
   });
 
   socket.on("createMessage", data => {
